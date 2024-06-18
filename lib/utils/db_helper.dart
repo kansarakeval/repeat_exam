@@ -12,8 +12,7 @@ class DBHelper {
   Future<Database> checkDb() async {
     if (dataBase != null) {
       return dataBase!;
-    }
-    else {
+    } else {
       return await initDb();
     }
   }
@@ -22,35 +21,52 @@ class DBHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, DB_NAME);
 
-    return openDatabase(path, version: 1, onCreate: (db, version) {
-      String todoTable = "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT , title TEXT,description TEXT, category TEXT)";
+    return openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) {
+        String todoTable =
+            "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT , title TEXT,description TEXT, category TEXT)";
 
-      db.execute(todoTable);
-    },);
+        db.execute(todoTable);
+      },
+    );
   }
 
   Future<void> insertDB(EditModel editModel) async {
     dataBase = await checkDb();
 
     dataBase!.insert("todo", {
-      "title":editModel.title,
-      "description":editModel.description,
-      "category":editModel.category,
+      "title": editModel.title,
+      "description": editModel.description,
+      "category": editModel.category,
     });
   }
+
   Future<List<EditModel>> readDB(EditModel editModel) async {
     dataBase = await checkDb();
     String query = "SELECT * FROM todo";
-    List<Map> data = await dataBase!.rawQuery(query,null);
-    List<EditModel> editList = data.map((e) => EditModel.mapToModel(e)).toList();
+    List<Map> data = await dataBase!.rawQuery(query, null);
+    List<EditModel> editList =
+        data.map((e) => EditModel.mapToModel(e)).toList();
     return editList;
   }
 
-
   Future<void> deleteDB({required String id}) async {
     dataBase = await checkDb();
-    dataBase!.delete("todo",where: "id=?",whereArgs:[id]);
-
+    dataBase!.delete("todo", where: "id=?", whereArgs: [id]);
   }
 
+  Future<void> updateDB(EditModel editModel) async {
+    dataBase = await checkDb();
+    await dataBase!.update(
+        "todo",
+        {
+          "title": editModel.title,
+          "description": editModel.description,
+          "category": editModel.category,
+        },
+        where: "id=?",
+        whereArgs: [editModel.id]);
+  }
 }
