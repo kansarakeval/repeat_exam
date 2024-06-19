@@ -61,4 +61,5 @@ class EditController extends GetxController {
       selectedDate.value = "${pickedDate.toLocal()}".split(' ')[0];
     }
   }
+
 }

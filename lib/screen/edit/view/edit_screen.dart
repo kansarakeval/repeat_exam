@@ -92,6 +92,7 @@ class _EditScreenState extends State<EditScreen> {
                             controller.getData();
                             txtTitle.clear();
                             txtDis.clear();
+                            controller.selectedCategory.value = '';
                             controller.selectedDate.value = '';
                             Get.back();
                           }
