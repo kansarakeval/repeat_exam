@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:repeat_exam/screen/edit/model/edit_model.dart';
 import 'package:repeat_exam/utils/db_helper.dart';
@@ -8,6 +10,7 @@ class EditController extends GetxController {
   RxBool isGrid = true.obs;
   RxBool islight = false.obs;
   RxString selectedCategory = ''.obs;
+  RxString selectedDate = ''.obs;
 
 
   Future<void> getData() async {
@@ -44,5 +47,18 @@ class EditController extends GetxController {
     DBHelper helper = DBHelper();
     await helper.updateDB(editModel);
     getData();
+  }
+
+  Future<void> pickDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      selectedDate.value = "${pickedDate.toLocal()}".split(' ')[0];
+    }
   }
 }

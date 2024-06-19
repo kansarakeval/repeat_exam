@@ -26,7 +26,7 @@ class DBHelper {
       version: 1,
       onCreate: (db, version) {
         String todoTable =
-            "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT , title TEXT,description TEXT, category TEXT)";
+            "CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT , title TEXT,description TEXT, category TEXT,date TEXT)";
 
         db.execute(todoTable);
       },
@@ -40,6 +40,7 @@ class DBHelper {
       "title": editModel.title,
       "description": editModel.description,
       "category": editModel.category,
+      "date": editModel.date,
     });
   }
 
@@ -65,6 +66,7 @@ class DBHelper {
           "title": editModel.title,
           "description": editModel.description,
           "category": editModel.category,
+          "date": editModel.date,
         },
         where: "id=?",
         whereArgs: [editModel.id]);
